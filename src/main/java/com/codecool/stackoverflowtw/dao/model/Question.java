@@ -1,21 +1,31 @@
 package com.codecool.stackoverflowtw.dao.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Question {
 
+    private final int id;
     private final String title;
     private final String body;
     private int like;
-    private LocalDate createdAt;
-    private int numOfAnswers;
+    private final LocalDateTime createdAt;
+    private final int numOfAnswers;
 
-    public Question(String title, String body, int like, LocalDate createdAt, int numOfAnswers) {
+    public Question(int id, String title, String body, int like, LocalDateTime createdAt, int numOfAnswers) {
+        this.id = id;
         this.title = title;
         this.body = body;
         this.like = like;
         this.createdAt = createdAt;
         this.numOfAnswers = numOfAnswers;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getNumOfAnswers() {
+        return numOfAnswers;
     }
 
     public String getTitle() {
@@ -30,7 +40,7 @@ public class Question {
         return like;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 

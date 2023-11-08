@@ -2,17 +2,21 @@ package com.codecool.stackoverflowtw.dao;
 
 import com.codecool.stackoverflowtw.dao.connection.PSQLConnector;
 import com.codecool.stackoverflowtw.dao.model.Question;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionsDaoJdbc implements QuestionsDAO {
 
-    private final PSQLConnector connector;
+    private PSQLConnector connector;
 
+    @Autowired
     public QuestionsDaoJdbc(PSQLConnector connector) {
+        System.out.println(connector.toString());
         this.connector = connector;
     }
 
@@ -23,7 +27,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     // itt lesznek a prepare statementek
 
     public List<Question> getAllQuestion() {
-        String sql = "SELECT question.title, question.body, " +
+        String sql = "SELECT question.question_id, question.title, question.body, " +
                 "question.number_ofLikes, question.create_at, " +
                 "COUNT(an.question_id) AS answer_num" +
                 "FROM questions " +
@@ -39,10 +43,11 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
             while(rs.next()) {
                 questions.add(new Question(
+                        rs.getInt("question_id"),
                         rs.getString("title"),
                         rs.getString("body"),
                         rs.getInt("number_of_likes"),
-                        LocalDate.parse(rs.getString("created_at")),
+                        LocalDateTime.parse(rs.getString("created_at")),
                         rs.getInt("answer_num")
                 ));
             }
