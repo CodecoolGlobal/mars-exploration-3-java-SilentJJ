@@ -168,4 +168,17 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             return null;
         }
     }
+
+
+    public void deleteQuestion (int id) {
+        String sql = "DELETE FROM questions WHERE question_id = ? ";
+        try {
+            Connection conn = connector.getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,id);
+            psmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
   };

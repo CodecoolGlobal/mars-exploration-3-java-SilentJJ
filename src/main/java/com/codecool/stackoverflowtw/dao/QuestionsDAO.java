@@ -11,4 +11,5 @@ public interface QuestionsDAO {
     public List<Question> sortQuestionAlphabetH();
     public List<Question> QuestionSortByDate();
     void addQuestion (NewQuestionDTO questionDTO);
+    void deleteQuestion (int id);
 }
