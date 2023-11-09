@@ -31,7 +31,9 @@ public class QuestionService {
     public QuestionDTO getQuestionById(int id) {
         // TODO
         questionsDAO.sayHi();
-        return null;
+        Question question = questionsDAO.getQuestion(id);
+        QuestionDTO questionDTO = new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike());
+        return questionDTO;
     }
 
     public boolean deleteQuestionById(int id) {

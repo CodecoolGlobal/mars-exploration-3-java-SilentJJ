@@ -1,35 +1,34 @@
 package com.codecool.stackoverflowtw.dao;
 
 import com.codecool.stackoverflowtw.dao.connection.PSQLConnector;
+import com.codecool.stackoverflowtw.dao.model.Answer;
 import com.codecool.stackoverflowtw.dao.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsDaoJdbc implements QuestionsDAO {
+public class AnswersDaoJdbc implements AnswersDAO{
 
     private PSQLConnector connector;
 
     @Autowired
-    public QuestionsDaoJdbc(PSQLConnector connector) {
+    public AnswersDaoJdbc(PSQLConnector connector) {
         System.out.println(connector.toString());
         this.connector = connector;
     }
 
-    @Override
-    public void sayHi() {
-        System.out.println("Hi DAO!");
-    }
 
     // itt lesznek a prepare statementek
-    @Override
-    public Question getQuestion(int id) {
-        String sql = "SELECT * FROM questions WHERE questions.question_id = ?";
+
+    public Answer getAnswer(int id) {
+        String sql = "SELECT * FROM answers WHERE answers.answers_id = ?";
 
         try {
             Connection conn = connector.getConnection();
@@ -41,13 +40,11 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
             DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
 
-            return new Question(
-                    rs.getInt("question_id"),
-                    rs.getString("title"),
+            return new Answer(
+                    rs.getInt("answer_id"),
                     rs.getString("body"),
                     rs.getInt("number_of_likes"),
-                    LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter),
-                    0
+                    LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter)
             );
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -56,38 +53,34 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
     }
 
-    public List<Question> getAllQuestion() {
-        String sql = "SELECT questions.question_id, questions.title, questions.body, " +
-                "questions.number_of_likes, questions.created_at, " +
-                "COUNT(an.question_id) AS answer_num " +
-                "FROM questions " +
-                "INNER JOIN answers AS an " +
-                "ON questions.question_id = an.question_id " +
-                "GROUP BY questions.question_id;";
+    public List<Answer> getAllAnswerForQuestion(int id) {
+        String sql = "SELECT * FROM answers WHERE answers.answer_id = ?";
+
         try {
             Connection conn = connector.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
 
-            List<Question> questions = new ArrayList<>();
+            List<Answer> answers = new ArrayList<>();
 
             DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
 
-            while(rs.next()) {
-                questions.add(new Question(
-                        rs.getInt("question_id"),
-                        rs.getString("title"),
+            while (rs.next()) {
+                answers.add(new Answer(
+                        rs.getInt("answer_id"),
                         rs.getString("body"),
                         rs.getInt("number_of_likes"),
-                        LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter),
-                        rs.getInt("answer_num")
+                        LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter)
                 ));
             }
-            return questions;
+
+            return answers;
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
+
 }
