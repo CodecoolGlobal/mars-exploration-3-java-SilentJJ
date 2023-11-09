@@ -1,5 +1,6 @@
 package com.codecool.stackoverflowtw.dao;
 
+import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.dao.connection.PSQLConnector;
 import com.codecool.stackoverflowtw.dao.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,32 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     }
     // itt lesznek a prepare statementek
 
+
+    public void addQuestion (NewQuestionDTO questionDTO) {
+
+
+
+        String title = questionDTO.title();
+        String body = questionDTO.description();
+        int likes = 0;
+        Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
+        String sql = "INSERT INTO questions(title, body, number_of_likes, created_at) " +
+                "VALUES (?,?,?,?)";
+
+                try {
+                    Connection conn = connector.getConnection();
+                    PreparedStatement psmt = conn.prepareStatement(sql);
+                    psmt.setString(1,title);
+                    psmt.setString(2,body);
+                    psmt.setInt(3,likes);
+                    psmt.setTimestamp(4,createdAt);
+                    psmt.execute();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+    }
+
     public List<Question> getAllQuestion() {
         String sql = "SELECT questions.question_id, questions.title, questions.body, " +
                 "questions.number_of_likes, questions.created_at, " +
@@ -42,7 +69,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
             List<Question> questions = new ArrayList<>();
 
-            DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
             while(rs.next()) {
                 questions.add(new Question(
@@ -50,7 +77,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
                         rs.getString("title"),
                         rs.getString("body"),
                         rs.getInt("number_of_likes"),
-                        LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter),
+                        LocalDateTime.parse(rs.getString("created_at").substring(0,16), formatter),
                         rs.getInt("answer_num")
                 ));
             }
