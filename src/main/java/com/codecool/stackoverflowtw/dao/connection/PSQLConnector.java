@@ -15,8 +15,6 @@ public class PSQLConnector {
 
     @Value("${connectionstring}")
     private String url;
-    @Value("${dbname}")
-    private String dbName;
     @Value("${dbpassword}")
     private String dbPassword;
     @Value("${dbusername}")
@@ -32,7 +30,7 @@ public class PSQLConnector {
         System.out.println("url:"+url);
         try {
             System.out.println("haho");
-             return DriverManager.getConnection("jdbc:postgresql://localhost:6090/stackoverflow", "postgres", "Password");
+             return DriverManager.getConnection(url, dbUsername, dbPassword);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
