@@ -1,6 +1,7 @@
 package com.codecool.stackoverflowtw.service;
 
 import com.codecool.stackoverflowtw.controller.dto.AnswerDTO;
+import com.codecool.stackoverflowtw.controller.dto.NewAnswerDTO;
 import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.controller.dto.QuestionDTO;
 import com.codecool.stackoverflowtw.dao.AnswersDAO;
@@ -38,14 +39,13 @@ public class AnswerService {
         return answerDTO;
     }
 
-    public boolean deleteAnswerById(int id) {
+    public int addNewAnswer(NewAnswerDTO answer) {
         // TODO
-        return false;
+        return answersDAO.addNewAnswer(answer);
     }
 
-    public int addNewAnswer(NewQuestionDTO question) {
+    public boolean deleteAnswerById(int id) {
         // TODO
-        int createdId = 0;
-        return createdId;
+        return answersDAO.deleteAnswerById(id);
     }
 }
