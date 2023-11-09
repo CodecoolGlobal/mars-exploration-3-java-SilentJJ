@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("questions")
+@RequestMapping("/api/questions")
 public class QuestionController {
     private final QuestionService questionService;
 
@@ -28,7 +28,7 @@ public class QuestionController {
         return questionService.getQuestionById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("/add")
     public int addNewQuestion(@RequestBody NewQuestionDTO question) {
         return questionService.addNewQuestion(question);
     }

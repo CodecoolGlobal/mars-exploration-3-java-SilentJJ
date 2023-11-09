@@ -39,7 +39,9 @@ public class QuestionService {
     }
 
     public int addNewQuestion(NewQuestionDTO question) {
-        return 0;
+          questionsDAO.addQuestion(new NewQuestionDTO(question.title(), question.description()));
+        int createdId = 0;
+        return createdId;
     }
     public List<QuestionDTO> sortQuestionsAlphabet(){
         List<Question> sortedQuestion =questionsDAO.sortQuestionAlphabetH();
