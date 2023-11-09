@@ -21,7 +21,6 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> getAllQuestions() {
-        // TODO
         List<Question> questions = questionsDAO.getAllQuestion();
         List<QuestionDTO> questionDTOS = questions.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
 
@@ -37,13 +36,24 @@ public class QuestionService {
     }
 
     public boolean deleteQuestionById(int id) {
-        // TODO
+        questionsDAO.deleteQuestion(id);
         return false;
     }
 
     public int addNewQuestion(NewQuestionDTO question) {
-        // TODO
+          questionsDAO.addQuestion(new NewQuestionDTO(question.title(), question.description()));
         int createdId = 0;
         return createdId;
+    }
+    public List<QuestionDTO> sortQuestionsAlphabet(){
+        List<Question> sortedQuestion =questionsDAO.sortQuestionAlphabetH();
+        List<QuestionDTO> questionDTO = sortedQuestion.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
+
+        return questionDTO;
+    }
+    public List<QuestionDTO> sortedQuestionByDate(){
+        List<Question> sortedQuestionByDate = questionsDAO.QuestionSortByDate();
+        List<QuestionDTO> questionDTO = sortedQuestionByDate.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
+        return questionDTO;
     }
 }
