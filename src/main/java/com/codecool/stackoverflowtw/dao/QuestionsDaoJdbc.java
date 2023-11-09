@@ -45,6 +45,36 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
     }
 
+    // itt lesznek a prepare statementek
+    @Override
+    public Question getQuestion(int id) {
+        String sql = "SELECT * FROM questions WHERE questions.question_id = ?";
+
+        try {
+            Connection conn = connector.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            rs.next();
+
+            DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
+
+            return new Question(
+                    rs.getInt("question_id"),
+                    rs.getString("title"),
+                    rs.getString("body"),
+                    rs.getInt("number_of_likes"),
+                    LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter),
+                    0
+            );
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+    }
+
     public List<Question> getAllQuestion() {
         String sql = "SELECT questions.question_id, questions.title, questions.body, " +
                 "questions.number_of_likes, questions.created_at, " +
