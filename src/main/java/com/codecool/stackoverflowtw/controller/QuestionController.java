@@ -37,4 +37,13 @@ public class QuestionController {
     public boolean deleteQuestionById(@PathVariable int id) {
         return questionService.deleteQuestionById(id);
     }
+    @GetMapping("/sortedByAlphabeth")
+    public List<QuestionDTO> getSortedQuestionByAlphabet() {
+        return questionService.sortQuestionsAlphabet();
+    }
+    @GetMapping("/sortedByDate")
+    public List<QuestionDTO> getSortedByDate(){
+        return questionService.sortedQuestionByDate();
+    }
+
 }

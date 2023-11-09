@@ -21,7 +21,6 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> getAllQuestions() {
-        // TODO
         List<Question> questions = questionsDAO.getAllQuestion();
         List<QuestionDTO> questionDTOS = questions.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
 
@@ -29,9 +28,9 @@ public class QuestionService {
     }
 
     public QuestionDTO getQuestionById(int id) {
-        // TODO
-        questionsDAO.sayHi();
-        return null;
+        Question searchedQuestion = questionsDAO.getQuestionById(id);
+        QuestionDTO questionDTO = new QuestionDTO(searchedQuestion.getId(),searchedQuestion.getTitle(),searchedQuestion.getBody(),searchedQuestion.getCreatedAt(),searchedQuestion.getNumOfAnswers(),searchedQuestion.getLike());
+        return questionDTO;
     }
 
     public boolean deleteQuestionById(int id) {
@@ -40,8 +39,19 @@ public class QuestionService {
     }
 
     public int addNewQuestion(NewQuestionDTO question) {
-        questionsDAO.addQuestion(new NewQuestionDTO(question.title(), question.description()));
+          questionsDAO.addQuestion(new NewQuestionDTO(question.title(), question.description()));
         int createdId = 0;
         return createdId;
+    }
+    public List<QuestionDTO> sortQuestionsAlphabet(){
+        List<Question> sortedQuestion =questionsDAO.sortQuestionAlphabetH();
+        List<QuestionDTO> questionDTO = sortedQuestion.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
+
+        return questionDTO;
+    }
+    public List<QuestionDTO> sortedQuestionByDate(){
+        List<Question> sortedQuestionByDate = questionsDAO.QuestionSortByDate();
+        List<QuestionDTO> questionDTO = sortedQuestionByDate.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
+        return questionDTO;
     }
 }

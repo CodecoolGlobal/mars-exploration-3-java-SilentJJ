@@ -6,7 +6,9 @@ import com.codecool.stackoverflowtw.dao.model.Question;
 import java.util.List;
 
 public interface QuestionsDAO {
-    void sayHi();
     List<Question> getAllQuestion();
+    public Question getQuestionById(int id);
+    public List<Question> sortQuestionAlphabetH();
+    public List<Question> QuestionSortByDate();
     void addQuestion (NewQuestionDTO questionDTO);
 }
