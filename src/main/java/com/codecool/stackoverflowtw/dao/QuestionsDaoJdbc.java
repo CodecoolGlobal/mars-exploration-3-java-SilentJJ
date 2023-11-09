@@ -83,12 +83,13 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
         String sql = "SELECT questions.question_id, questions.title, questions.body, " +
                 "questions.number_of_likes, questions.created_at, " +
                 "COUNT(an.question_id) AS answer_num " +
-                "INNER JOIN answers as an ON questions.question_id = an.question_id " +
-                "WHERE questions.question_id = " + id;
+                "LEFT JOIN answers as an ON questions.question_id = an.question_id " +
+                "WHERE questions.question_id = ?";
 
         try{
             Connection conn = connector.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1,id);
             ResultSet rs = statement.executeQuery();
             DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
             Question searchedQuestion = null;
@@ -167,5 +168,19 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+    public void addLikesToQuestions(int id){
+        String sql = "UPDATE questions " +
+                "set number_of_likes = number_of_likes + 1 " +
+                "WHERE question_id = ?";
+        try {
+            Connection conn = connector.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1,id);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
   };

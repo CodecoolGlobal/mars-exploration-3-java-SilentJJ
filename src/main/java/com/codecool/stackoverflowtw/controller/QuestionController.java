@@ -37,7 +37,7 @@ public class QuestionController {
     public boolean deleteQuestionById(@PathVariable int id) {
         return questionService.deleteQuestionById(id);
     }
-    @GetMapping("/sortedByAlphabeth")
+    @GetMapping("/sortedByAlphabet")
     public List<QuestionDTO> getSortedQuestionByAlphabet() {
         return questionService.sortQuestionsAlphabet();
     }
@@ -45,5 +45,10 @@ public class QuestionController {
     public List<QuestionDTO> getSortedByDate(){
         return questionService.sortedQuestionByDate();
     }
+    @PutMapping("/like/{id}")
+    public void addLike(@PathVariable int id){
+        questionService.addLikesToQuestion(id);
+    }
+
 
 }

@@ -54,4 +54,7 @@ public class QuestionService {
         List<QuestionDTO> questionDTO = sortedQuestionByDate.stream().map(question -> new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike())).toList();
         return questionDTO;
     }
+    public void addLikesToQuestion(int id){
+        questionsDAO.addLikesToQuestions(id);
+    }
 }

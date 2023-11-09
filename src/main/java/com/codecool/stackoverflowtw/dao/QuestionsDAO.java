@@ -10,5 +10,6 @@ public interface QuestionsDAO {
     public Question getQuestionById(int id);
     public List<Question> sortQuestionAlphabetH();
     public List<Question> QuestionSortByDate();
-    void addQuestion (NewQuestionDTO questionDTO);
+    public void addQuestion (NewQuestionDTO questionDTO);
+    public void addLikesToQuestions(int id);
 }
