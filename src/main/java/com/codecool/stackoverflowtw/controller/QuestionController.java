@@ -33,7 +33,7 @@ public class QuestionController {
         return questionService.addNewQuestion(question);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public boolean deleteQuestionById(@PathVariable int id) {
         return questionService.deleteQuestionById(id);
     }

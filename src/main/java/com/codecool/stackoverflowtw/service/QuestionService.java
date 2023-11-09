@@ -28,13 +28,13 @@ public class QuestionService {
     }
 
     public QuestionDTO getQuestionById(int id) {
-        Question searchedQuestion = questionsDAO.getQuestionById(id);
-        QuestionDTO questionDTO = new QuestionDTO(searchedQuestion.getId(),searchedQuestion.getTitle(),searchedQuestion.getBody(),searchedQuestion.getCreatedAt(),searchedQuestion.getNumOfAnswers(),searchedQuestion.getLike());
+        Question question = questionsDAO.getQuestionById(id);
+        QuestionDTO questionDTO = new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike());
         return questionDTO;
     }
 
     public boolean deleteQuestionById(int id) {
-        // TODO
+        questionsDAO.deleteQuestion(id);
         return false;
     }
 

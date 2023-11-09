@@ -44,6 +44,34 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
                 }
 
     }
+    @Override
+    public Question getQuestionById(int id) {
+        String sql = "SELECT * FROM questions WHERE questions.question_id = ?";
+
+        try {
+            Connection conn = connector.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            rs.next();
+
+            DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
+
+            return new Question(
+                    rs.getInt("question_id"),
+                    rs.getString("title"),
+                    rs.getString("body"),
+                    rs.getInt("number_of_likes"),
+                    LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter),
+                    0
+            );
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+    }
 
     public List<Question> getAllQuestion() {
         String sql = "SELECT questions.question_id, questions.title, questions.body, " +
@@ -79,37 +107,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             return null;
         }
     }
-    public Question getQuestionById(int id) {
-        String sql = "SELECT questions.question_id, questions.title, questions.body, " +
-                "questions.number_of_likes, questions.created_at, " +
-                "COUNT(an.question_id) AS answer_num " +
-                "LEFT JOIN answers as an ON questions.question_id = an.question_id " +
-                "WHERE questions.question_id = ?";
 
-        try{
-            Connection conn = connector.getConnection();
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1,id);
-            ResultSet rs = statement.executeQuery();
-            DateTimeFormatter formatter = DateTimeFormatter. ofPattern("yyyy-MM-dd HH:mm");
-            Question searchedQuestion = null;
-            while (rs.next()){
-                 searchedQuestion = new Question(
-                        rs.getInt("question_id"),
-                        rs.getString("title"),
-                        rs.getString("body"),
-                        rs.getInt("number_of_likes"),
-                        LocalDateTime.parse(rs.getString("created_at").substring(0, 16), formatter),
-                        rs.getInt("answer_num")
-                );
-            }
-            return searchedQuestion;
-        }catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-
-    }
     public List<Question> sortQuestionAlphabetH(){
         String sql = "SELECT questions.question_id, questions.title, questions.body, questions.number_of_likes, questions.created_at,  +\n" +
                 "COUNT(an.question_id) AS answer_num\n" +
@@ -182,5 +180,18 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             throw new RuntimeException(e);
         }
 
+    }
+
+
+    public void deleteQuestion (int id) {
+        String sql = "DELETE FROM questions WHERE question_id = ? ";
+        try {
+            Connection conn = connector.getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,id);
+            psmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
   };

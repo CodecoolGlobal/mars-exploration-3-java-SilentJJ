@@ -1,5 +1,7 @@
 package com.codecool.stackoverflowtw;
 
+import com.codecool.stackoverflowtw.dao.AnswersDAO;
+import com.codecool.stackoverflowtw.dao.AnswersDaoJdbc;
 import com.codecool.stackoverflowtw.dao.QuestionsDAO;
 import com.codecool.stackoverflowtw.dao.QuestionsDaoJdbc;
 import com.codecool.stackoverflowtw.dao.connection.PSQLConnector;
@@ -18,5 +20,9 @@ public class StackoverflowTwApplication {
     @Bean
     public QuestionsDAO questionsDAO(PSQLConnector connector) {
         return new QuestionsDaoJdbc(connector);
+    }
+    @Bean
+    public AnswersDAO answersDAO(PSQLConnector connector) {
+        return new AnswersDaoJdbc(connector);
     }
 }
