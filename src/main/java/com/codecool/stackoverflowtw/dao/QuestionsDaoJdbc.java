@@ -59,7 +59,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
                 "questions.number_of_likes, questions.created_at, " +
                 "COUNT(an.question_id) AS answer_num " +
                 "FROM questions " +
-                "INNER JOIN answers AS an " +
+                "LEFT JOIN answers AS an " +
                 "ON questions.question_id = an.question_id " +
                 "GROUP BY questions.question_id;";
         try {
