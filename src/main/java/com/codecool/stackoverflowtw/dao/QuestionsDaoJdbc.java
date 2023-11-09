@@ -47,7 +47,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
     // itt lesznek a prepare statementek
     @Override
-    public Question getQuestion(int id) {
+    public Question getQuestionById(int id) {
         String sql = "SELECT * FROM questions WHERE questions.question_id = ?";
 
         try {
@@ -109,7 +109,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             return null;
         }
     }
-    public Question getQuestionById(int id) {
+/*    public Question getQuestionById(int id) {
         String sql = "SELECT questions.question_id, questions.title, questions.body, " +
                 "questions.number_of_likes, questions.created_at, " +
                 "COUNT(an.question_id) AS answer_num " +
@@ -138,7 +138,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             return null;
         }
 
-    }
+    }*/
     public List<Question> sortQuestionAlphabetH(){
         String sql = "SELECT questions.question_id, questions.title, questions.body, questions.number_of_likes, questions.created_at,  +\n" +
                 "COUNT(an.question_id) AS answer_num\n" +

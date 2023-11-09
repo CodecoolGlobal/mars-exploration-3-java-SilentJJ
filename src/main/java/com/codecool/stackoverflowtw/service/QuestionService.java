@@ -29,8 +29,7 @@ public class QuestionService {
 
     public QuestionDTO getQuestionById(int id) {
         // TODO
-        questionsDAO.sayHi();
-        Question question = questionsDAO.getQuestion(id);
+        Question question = questionsDAO.getQuestionById(id);
         QuestionDTO questionDTO = new QuestionDTO(question.getId(), question.getTitle(), question.getBody(), question.getCreatedAt(), question.getNumOfAnswers(), question.getLike());
         return questionDTO;
     }
